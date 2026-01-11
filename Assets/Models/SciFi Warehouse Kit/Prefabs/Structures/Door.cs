@@ -31,17 +31,18 @@ public class Door : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        var player = other.gameObject.GetComponent<Player>();
-        if (player == null) { return; }
-        if (target == null) { return; }
-        isOpen = !isOpen;
+        if (other.gameObject.CompareTag("Player"))
+        {
+           isOpen = !isOpen;
+        }
 
     }
     private void OnCollisionExit(Collision other)
     {
-        var player = other.gameObject.GetComponent<Player>();
-        if (player == null) { return; }
-        if (target == null) { return; }
-        isOpen = !isOpen;
+        if (other.gameObject.CompareTag("Player"))
+        {
+            isOpen = !isOpen;
+        }
+
     }
 }

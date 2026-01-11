@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Cinemachine;
+using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(InputManager))]
@@ -10,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     PlayerLocomotion playerLocomotion;
     Animator animator;
 
+    public GameObject mainCamera, cineCamera;
     public bool isInteracting, isUsingRootMotion;
 
     void Awake()
@@ -17,6 +19,12 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
         inputManager = GetComponent<InputManager>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
+
+        mainCamera = Camera.main.gameObject;
+        cineCamera = FindFirstObjectByType<CinemachineCamera>().gameObject;
+        
+        if (mainCamera) mainCamera.transform.SetParent(null, true);
+        if (cineCamera) cineCamera.transform.SetParent(null, true);
     }
 
     void Update()
@@ -35,7 +43,6 @@ public class PlayerManager : MonoBehaviour
         isInteracting = animator.GetBool("isInteracting");
         isUsingRootMotion = animator.GetBool("isUsingRootMotion");
         playerLocomotion.isJumping = animator.GetBool("isJumping");
-        playerLocomotion.isCrouching = animator.GetBool("isCrouching");
         animator.SetBool("isGrounded", playerLocomotion.isGrounded);
     }
 }

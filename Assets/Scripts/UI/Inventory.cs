@@ -26,7 +26,7 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         Singleton = this;
-        giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(); });
+        //giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(); });
     }
 
     void Update()
