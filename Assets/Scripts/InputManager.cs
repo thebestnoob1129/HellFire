@@ -8,11 +8,11 @@ public class InputManager : MonoBehaviour
     private PlayerLocomotion playerLocomotion;
     private AnimatorManager animatorManager;
 
-    private Vector2 movementInput;
     public float verticalInput, horizontalInput;
     public float moveAmount;
 
-    public bool sprintInput, jumpInput, dodgeInput, crouchInput;
+    private Vector2 movementInput;
+    public bool sprintInput, dodgeInput, crouchInput, interactInput;
     void Awake()
     {
         animatorManager = GetComponent<AnimatorManager>();
@@ -34,9 +34,8 @@ public class InputManager : MonoBehaviour
             playerControls.Player.Crouch.performed += ctx => crouchInput = true;
             playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
 
-            playerControls.Player.Jump.performed += ctx => jumpInput = true;
-
-            playerControls.Player.Dodge.performed += ctx => dodgeInput = true;
+            playerControls.Player.Interact.performed += ctx => interactInput = true;
+            playerControls.Player.Interact.canceled += ctx => interactInput = false;
 
         }
         playerControls.Enable();
@@ -53,9 +52,8 @@ public class InputManager : MonoBehaviour
 
         HandleMovementInput();
         HandleSprintInput();
-        HandleJumpInput();
-        HandleDodgeInput();
         HandleCrouchInput();
+        HandleInteractInput();
 
     }
 
@@ -72,27 +70,13 @@ public class InputManager : MonoBehaviour
         playerLocomotion.isSprinting = sprintInput && moveAmount > 0.5f;
     }
 
-    private void HandleJumpInput()
+    private void HandleInteractInput()
     {
-        if (jumpInput)
-        {
-            jumpInput = false;
-            playerLocomotion.HandleJumping();
-        }
-    }
-
-    private void HandleDodgeInput()
-    {
-        if (dodgeInput)
-        {
-            dodgeInput = false;
-            playerLocomotion.HandleDodge();
-        }
+        playerLocomotion.isInteracting = interactInput;
     }
 
     private void HandleCrouchInput()
     {
         playerLocomotion.isCrouching = crouchInput;
     }
-
 }
