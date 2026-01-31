@@ -1,6 +1,6 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 interface IInteractable
 {
@@ -15,16 +15,18 @@ interface IInteractable
 [RequireComponent(typeof(CapsuleCollider))]
 public class PlayerLocomotion : MonoBehaviour
 {
-    PlayerManager playerManager;
-    InputManager inputManager;
-    AnimatorManager animatorManager;
-    CapsuleCollider capsuleCollider;
-    PlayerStats  playerStats;
+    private PlayerManager playerManager;
+    private InputManager inputManager;// Handle Movement
+    private AnimatorManager animatorManager;
+    private CapsuleCollider capsuleCollider;
+    private PlayerStats  playerStats;
     public Rigidbody playerRigidbody;
 
     private Transform cameraObject;
     private Transform cineObject;
 
+    [Header("Inputs")] 
+    [HideInInspector] private InputAction interactAction;
 
     [Header("Ground & Air Detection")] 
     public float inAirTimer;
@@ -43,20 +45,24 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Movement Flags")]
     public bool isGrounded = true;
     public bool isSprinting, isCrouching, isInteracting, isJumping, isHiding;
+    private Ray slopeRay;
 
     [Header("Jump Speeds")]
     public float jumpHeight = 3f;
     public float gravityIntensity = -15f;
-
+    
+    [Header("Crouch")]
     private float defaultHeight;
-    private Vector3 defaultCenter;
+    private Vector3 defaultColliderPos;
+    private Vector3 defaultCameraPos;
 
     [Header("Interaction Flags")]
-    public Transform targetObject;
-    private Transform hideObject;
+    [SerializeField] private Transform targetObject;
+    private HidingSpot hideObject;
     public float interactRange = 1.5f;
+    public LayerMask interactLayer;
 
-    void Awake()
+    private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
         inputManager = GetComponent<InputManager>();
@@ -65,12 +71,21 @@ public class PlayerLocomotion : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         playerStats = GetComponent<PlayerStats>();
 
+        // Cameras
         cameraObject = Camera.main.transform;
         cineObject = playerManager.cineCamera.transform;
 
+        // Collider
         rayCastHeightOffset =  capsuleCollider.height / 2;
         defaultHeight = capsuleCollider.height;
-        defaultCenter = capsuleCollider.center;
+        defaultColliderPos = capsuleCollider.center;
+        defaultCameraPos = targetObject.localPosition;
+
+        interactAction = inputManager.interactAction;
+    }
+    private void FixedUpdate()
+    {
+        HandleInteract();
     }
 
     public void HandleAllMovement()
@@ -78,20 +93,19 @@ public class PlayerLocomotion : MonoBehaviour
         HandleMovement();
         HandleRotation();
         HandleFallingAndLanding();
-        HandleInteract();
         HandleCrouch();
     }
-
+    #region Movement
     private void HandleMovement()
     {
         if (isHiding)
         {
             if (inputManager.moveAmount > 0)
             {
-                transform.position = hideObject.position + hideObject.forward;
+                transform.position = hideObject.releasePositon + hideObject.transform.position;
                 targetObject.SetParent(transform);
-                targetObject.localPosition = new(0, 1.7f, 0);
-                StartCoroutine(LeaveSpot());
+                targetObject.localPosition = new Vector3(0, 1.7f, 0);
+                Invoke(nameof(LeaveSpot), 1f);
             }
             else
             {
@@ -111,6 +125,16 @@ public class PlayerLocomotion : MonoBehaviour
         else if (isCrouching) { playerVelocity = crouchSpeed * moveDirection; }
         else{ playerVelocity = walkSpeed * moveDirection; }
 
+        /*
+        //Player Slope Rotation
+        if (Physics.SphereCast(slopeRay, 0.2f, out var hitInfo, rayCastHeightOffset, groundLayer))
+        {
+            Vector3 slopeNormal = hitInfo.normal;
+            Quaternion slopeRotation = Quaternion.FromToRotation(Vector3.up, slopeNormal);
+            playerVelocity = slopeRotation * playerVelocity;
+            playerVelocity.y += rayCastHeightOffset;
+        }
+        */
         playerRigidbody.linearVelocity = playerVelocity;
     }
     
@@ -134,30 +158,29 @@ public class PlayerLocomotion : MonoBehaviour
     private void HandleFallingAndLanding()
     {
         RaycastHit hit = new();
-        Ray hitRay = new()
-        {
-            origin = transform.position + new Vector3(0, rayCastHeightOffset, 0),
-            direction = -transform.up
-        };
-        Vector3 targetPosition = transform.position + new Vector3(0, rayCastHeightOffset, 0);
+        slopeRay = new Ray{ origin = transform.position + new Vector3(0, rayCastHeightOffset, 0), direction = -transform.up };
+        
+        var targetPosition = transform.position;
 
         if (!isGrounded)
         {
             animatorManager.PlayTargetAnimation("Falling", true);
             animatorManager.animator.SetBool("isUsingRootMotion", false);
             inAirTimer += Time.deltaTime;
-            playerRigidbody.AddForce(Physics.gravity * inAirTimer, ForceMode.Impulse);
+            playerRigidbody.AddForce(Physics.gravity * (10 * inAirTimer), ForceMode.Impulse);
         }
 
-        if (Physics.SphereCast(hitRay, 0.2f, 1f, groundLayer))
+
+        if (Physics.SphereCast(slopeRay, 0.2f, rayCastHeightOffset))
         {
             if (!isGrounded && !playerManager.isInteracting)
             {
                 animatorManager.PlayTargetAnimation("Land", true);
             }
 
-            Vector3 raycastHitPoint = hit.point;
-            targetPosition.y = raycastHitPoint.y;
+            targetPosition.y = hit.point.y + transform.position.y;
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / 0.1f);
+            //transform.position = new Vector3(targetPosition.x, targetPosition.y, targetPosition.z);
             inAirTimer = 0;
             isGrounded = true;
         }
@@ -165,59 +188,73 @@ public class PlayerLocomotion : MonoBehaviour
         {
             isGrounded = false;
         }
-        if (isGrounded)
+        
+        if (isGrounded && !isJumping)
         {
             if (playerManager.isInteracting || inputManager.moveAmount > 0)
             {
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / 0.1f);
+            }
+            else
+            {
+                transform.position = targetPosition;
             }
         }
+        
     }
 
     public void HandleCrouch()
     {
-        if (!isGrounded) return;
+        //if (!isGrounded) return;
+        if (!isHiding) return;
         animatorManager.animator.SetBool("isCrouching", isCrouching);
 
-        if (!isCrouching)
+        if (inputManager.crouchAction.inProgress)
+        {
+            Debug.Log("Crouching");
+            capsuleCollider.height = defaultHeight / 2;
+            capsuleCollider.center = new Vector3(defaultColliderPos.x, defaultColliderPos.y / 2, defaultColliderPos.z);
+            targetObject.localPosition = new Vector3(0, defaultCameraPos.y / 2, 0);
+            //animatorManager.PlayTargetAnimation("Crouch Idle", false);
+        }
+        else
         {
             capsuleCollider.height = defaultHeight;
-            capsuleCollider.center = defaultCenter;
-            return;
+            capsuleCollider.center = defaultColliderPos;
+            targetObject.localPosition = defaultCameraPos;
         }
 
-        //animatorManager.PlayTargetAnimation("Crouch Idle", false);
-        capsuleCollider.height = defaultHeight / 2;
-        capsuleCollider.center = new Vector3(defaultCenter.x, defaultCenter.y / 2, defaultCenter.z);
-
     }
-    
-    void HandleInteract()
+    #endregion
+
+    #region Interact
+    private void HandleInteract()
     {
-        if (isInteracting)
+        if (interactAction.IsPressed())
         {
             Ray r = new(cameraObject.position, cameraObject.forward);
-            if (Physics.Raycast(r, out RaycastHit hitInfo, interactRange))
+            if (Physics.Raycast(r, out var hitInfo, interactRange))
             {
-                GameObject obj = hitInfo.collider.gameObject;
+                var obj = hitInfo.collider.gameObject;
                 animatorManager.animator.SetBool("isInteracting", true);
 
-                if (obj.TryGetComponent(out HidingSpot hidingSpot))
+                if (obj.TryGetComponent(out HidingSpot spot))
                 {
-                    Debug.Log("Hide", obj);
-                    hideObject = hidingSpot.transform;
-                    transform.position = hideObject.position + Vector3.up * 3;
-                    targetObject.SetParent(hideObject, false);
-                    targetObject.position = hideObject.position;
-                    StartCoroutine(HidePlayer());
+                    StartCoroutine(HidePlayer(spot));
+                    return;
                 }
 
-                if (obj.TryGetComponent(out IInteractable interactObject))
+                if (obj.GetComponent<Item>())
                 {
-                    Debug.Log("Interacted", obj );
-                    interactObject.Interact();
+                    var canAdd = InventoryManager.Instance.AddItem(obj.GetComponent<Item>());
+                    if (canAdd && canPickup)
+                    {
+                        Destroy(obj);
+                        StartCoroutine(PickUpItem());
+                        return;
+                    }
                 }
-                
+
+                if (obj.GetComponent<Pickup>()) { playerManager.Pickup(obj); }
             }
         }
         else
@@ -225,29 +262,44 @@ public class PlayerLocomotion : MonoBehaviour
             animatorManager.animator.SetBool("isInteracting", false);
         }
     }
-    
+
+    private bool canPickup = true;
     private readonly WaitForSeconds waitTime = new(1f);
 
-    private IEnumerator HidePlayer()
+    private IEnumerator PickUpItem()
     {
+        if (!canPickup) yield break;
+        canPickup = false;
+        yield return waitTime;
+        canPickup = true;
+    }
+
+    #endregion
+
+    #region Hide
+    private IEnumerator HidePlayer(HidingSpot hidingSpot)
+    {
+        hideObject = hidingSpot;
+        transform.position = hidingSpot.transform.position + hidingSpot.releasePositon;
+        targetObject.SetParent(hidingSpot.transform, false);
+        targetObject.position = hidingSpot.transform.position;
         animatorManager.animator.SetBool("isHiding", true);
         yield return waitTime;
         isHiding = true;
     }
-    private IEnumerator LeaveSpot()
+    private void LeaveSpot()
     {
         animatorManager.animator.SetBool("isHiding", false);
-        yield return waitTime;
         isHiding = false;
     }
+
+#endregion
     private void OnDrawGizmosSelected()
     {
-        if (cameraObject)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawRay(new Ray(cameraObject.position, cameraObject.forward * 3f));
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(cameraObject.position, interactRange);
-        }
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(slopeRay);
+
+        Gizmos.color = Color.yellow;
+        if (cameraObject) Gizmos.DrawRay(new Ray(cameraObject.position, cameraObject.forward * interactRange));
     }
 }

@@ -82,6 +82,5 @@ public class AnimatorManager : MonoBehaviour
                 playerLocomotion.playerRigidbody.linearVelocity = velocity;
             }
         }
-        
     }
 }

@@ -1,36 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class InventoryItem : MonoBehaviour, IPointerClickHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    Image itemIcon;
-    public CanvasGroup canvasGroup { get; private set; }
+    public Item item;
 
-    public Item myItem { get; set; }
-    public InventorySlot activeSlot { get; set; }
+    [Header("UI")]
+    public RawImage image;
+    public TMP_Text countText;
 
-    void Awake()
+    [HideInInspector] public int count = 1;
+    [HideInInspector] public Transform parentAfterDrag;
+
+    public void InitialiseItem(Item newItem)
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-        itemIcon = GetComponent<Image>();
+        item = newItem;
+        image.texture = newItem.texture;
+
+        RefreshCount();
     }
 
-    public void Initialize(Item item, InventorySlot parent)
+    public void RefreshCount()
     {
-        activeSlot = parent;
-        activeSlot.myItem = this;
-        myItem = item;
-        itemIcon.sprite = item.sprite;
+        countText.text = count.ToString();
+        var  textActive = count > 1;
+        countText.gameObject.SetActive(textActive);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            Inventory.Singleton.SetCarriedItem(this);
-        }
+        image.raycastTarget = false;
+        parentAfterDrag = transform.parent;
+        transform.SetParent(transform.root);
     }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        transform.position = Input.mousePosition;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        image.raycastTarget = true;
+        transform.SetParent(parentAfterDrag);
+    }
+
 }

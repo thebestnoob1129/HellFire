@@ -1,39 +1,33 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public InventoryItem myItem { get; set; }
-    public SlotTag myTag { get; set; }
+    public RawImage image;
+    public Color selectedColor, notSelectedColor;
 
-
-
-
-    public void OnPointerClick(PointerEventData eventData)
+    private void Start()
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            Debug.Log("Right click on inventory slot: " + gameObject.name);
-            if (Inventory.carriedItem == null) return;
-            if (myTag != SlotTag.None && Inventory.carriedItem.myItem.itemTag != myTag) { return;}
-            SetItem(Inventory.carriedItem);
-        }
-    }
-    
-    public void SetItem(InventoryItem item)
-    {
-        Inventory.carriedItem = null;
-
-        item.activeSlot.myItem = null;
-
-        myItem = item;
-        myItem.activeSlot = this;
-        myItem.transform.SetParent(transform);
-
-        if (myTag !=  SlotTag.None)
-        {
-            Inventory.Singleton.EquipEquipment(myTag, myItem);
-        }
+        DeSelect();
     }
 
+    public void Select()
+    {
+        image.color = selectedColor;
+    }
+
+    public void DeSelect()
+    {
+        image.color = notSelectedColor;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (transform.childCount == 0)
+        {
+            var inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+            inventoryItem.parentAfterDrag = transform;
+        }
+    }
 }

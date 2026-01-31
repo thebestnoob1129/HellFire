@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1e7ac56c8149d7d4cb9cb5dc307fb79f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tvCamera: {instanceID: 0}
+  - screen: {instanceID: 0}
+  - tvMaterial: {fileID: 2100000, guid: 77286edfcc498614bb4c75e0b8520111, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
