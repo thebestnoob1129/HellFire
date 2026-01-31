@@ -1,0 +1,88 @@
+[ Genre Futuristic Horror ]
+
+The player has to retriece resouces and evidence to uncover the mystery of the facility they are trapped in. 
+The player must avoid hostile entities while solving puzzles and navigating through the environment.
+The game will feature a dark and atmospheric setting, with a focus on tension and suspense.
+The player will have to return to the lobby/spawn to save their progress and unlock new levels.
+
+[ Art Style ]
+	- Realistic Textures
+	- Dark and Gritty Atmosphere
+	- Futuristic Technology Elements
+[ Mechanics ]
+	- First-Person Perspective
+	- Stealth and Evasion
+	- Puzzle Solving
+	- Resource Management
+	- Inventory System
+	- Save System
+	- Audio Cues for Enemy Proximity
+
+[Notes]
+	- IEnumerator Calls then waits
+	- Invoke Waits then calls
+	- Custom Crosshairs
+	- Use Kevin's basic Animations
+
+[ Bugs ]
+	- Selected Inventory Slot Doesn't Show On Start
+	- Player Can't Go Up Slopes
+[ Gameplay ]
+	Highlight Objects When Can Be Interacted With
+
+	Add Weapon Sounds, Effects, and Animations
+	Add Weapons Scripts and Functions
+		- SMG
+		- Sniper
+		- Grenade Launcher
+		- Semi-Auto
+		- Burst
+	Bullet Types
+		- Normal
+		- Explosive
+		- Heal
+	Journals && Evidence
+		- Paper Texture
+		- Simple Lore
+		- Achievement Unlock
+	Keys
+		- Save Unlocks
+		- Required For Continuing
+
+[ Enemies ]
+	4 Main Horror Creatures ( Refer To Terria & Other Horror Games)
+	- Enemy Attack Damage
+		- Player will only take damage from smaller enemies
+	- Enemy Jumpscare & Kill
+		- Jumpscares will be videos of each entity with 3 variations
+		- The player will be send back to spawn or lobby after jumpscare
+[ Player Mechanics ]
+	- Hiding
+		- Player can hide in different spots across the map
+		- Player can use crates, barrels, and other objects to hide in the map
+
+[ Scenes ]
+	Main Menu
+		- 3D World Space of main map
+		- 2D Canvas for UI Scene
+		// Active Camera Movement Across Menus
+		- Play / Save & Load
+		- Settings
+		- Exit
+	Lobby
+		- Player can select levels from tv screen
+		- Player wakes up in ____ designed room
+[ Tycoon ]
+	- Basic Tycoon System Added
+		- Player can interact with tycoon objects to earn money
+		- Player can use money to purchase items from shop
+	- Shop System Added
+		- Player can buy items from shop using money earned from tycoons
+		- Shop displays available items and their prices
+[ Inventory System ]
+	- Inventory UI Updated
+		- Added item descriptions and stats
+		- Improved layout for easier navigation
+	- Item Management
+		- Player can now sort items by type, rarity, and value
+		- Added functionality to drop and discard items
