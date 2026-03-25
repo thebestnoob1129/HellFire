@@ -42,6 +42,9 @@ namespace CFS
         public WeaponItemAction ohRBAction; // One-Handed Right Bumper Action
         public WeaponItemAction ohRTAction; // One-Handed Right Trigger Action
 
+        [Header("Whooshes")] 
+        public AudioClip[] whooshes;
+
         // Ash of war
 
         // Blocking Sounds

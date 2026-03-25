@@ -1,5 +1,3 @@
-using System;
-using Mono.Cecil;
 using UnityEngine;
 
 public class Door : MonoBehaviour

@@ -1,3 +1,4 @@
+using CFS;
 using UnityEngine;
 
 public class LootBox : MonoBehaviour, IInteractable
@@ -19,7 +20,7 @@ public class LootBox : MonoBehaviour, IInteractable
         //player.AddCoins(coins);
         
         var rewardedItem = possibleItems[Random.Range(0, possibleItems.Length)];
-        player.AddItem(rewardedItem);
+        //player.AddItem(rewardedItem);
         Destroy(gameObject, 1f);
     }
 

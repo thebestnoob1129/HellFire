@@ -11,12 +11,10 @@ namespace CFS
 
         public static WorldAIManager Instance { get; private set; }
 
-        [Header("Debug")] [SerializeField] private bool despawnCharacters = false;
-        [SerializeField] private bool respawnCharacters = false;
 
-        [Header("Characters")] [SerializeField]
-        private GameObject[] aiCharacters;
-
+        [Header("Characters")]
+        [SerializeField] private List<AICharacterSpawner> aiCharacterSpawners;
+        [SerializeField] private GameObject[] aiCharacters;
         [SerializeField] private List<GameObject> spawnedCharacters;
 
         private void Awake()
@@ -32,50 +30,20 @@ namespace CFS
             }
         }
 
-        private void Start()
-        {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                // Spawn All A.I. In Scene
-                StartCoroutine(WaitForSceneToLoad());
-            }
-        }
-
-        private void Update()
-        {
-            if (despawnCharacters)
-            {
-                despawnCharacters = false;
-                DespawnAllCharacters();
-            }
-
-            if (respawnCharacters)
-            {
-                respawnCharacters = false;
-                SpawnAllCharacters();
-            }
-        }
-
-        private IEnumerator WaitForSceneToLoad()
-        {
-            while (!SceneManager.GetActiveScene().isLoaded)
-            {
-                yield return null;
-            }
-
-            SpawnAllCharacters();
-
-        }
-
         private void SpawnAllCharacters()
         {
             // Spawn Character in Specific Location by Copying Transform Position To Prefab ( Most likely bosses )
-            foreach (var character in aiCharacters)
+            foreach (var character in aiCharacterSpawners)
             {
-                var instantiatedCharacter = Instantiate(character);
-                instantiatedCharacter.GetComponent<NetworkObject>().Spawn();
-                spawnedCharacters.Add(instantiatedCharacter);
+                character.AttemptToSpawnCharacter();
             }
+        }
+
+        public void SpawnCharacter(AICharacterSpawner spawner)
+        {
+            if (!NetworkManager.Singleton.IsServer) return;
+            aiCharacterSpawners.Add(spawner);
+            spawner.AttemptToSpawnCharacter();
         }
 
         private void DespawnAllCharacters()
@@ -88,10 +56,5 @@ namespace CFS
             spawnedCharacters.Clear();
         }
 
-        private void DisableAllCharacters(){
-        // Disable character game objects, sync disabled status on network
-        // Disable game objects for clients upon connecting, if disabled status is true
-        // Can be used to disable characters that are far from players to save memory
-        }
     }
 }

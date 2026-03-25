@@ -104,7 +104,7 @@ namespace CFS
             var physicalDamageSFX = WorldSoundFXManager.Instance.ChooseRandomSFX(WorldSoundFXManager.Instance.physicalDamageSFX);
 
             character.characterSoundFXManager.PlaySoundFX(physicalDamageSFX);
-
+            character.characterSoundFXManager.PlayDamageGrunt();
             // if elemental damage, play elemental sound
         }
 
