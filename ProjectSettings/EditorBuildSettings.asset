@@ -6,8 +6,47 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Scene_MainMenu/Scene_Main_Menu_01.unity
+    guid: 99871004fb254164582aa9883c41c80c
+  - enabled: 1
+    path: Assets/Scenes/Demo.unity
+    guid: fd3fd33cceb0730419b2eb9c7200a6da
+  - enabled: 1
+    path: Assets/Scenes/Scene_Lobby/Scene_Lobby_02.unity
+    guid: c1ca773a5ee61b3408f9d176807eb206
+  - enabled: 0
+    path: Assets/Scenes/Scene_Lobby/Scene_Lobby_01.unity
+    guid: 85b46d85a6a8d924c915667bda784116
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_First_Floor/Scene_First_Floor.unity
+    guid: 49ef4c755e820424e8c010a853eeefe5
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Second_Floor/Scene_Second_Floor.unity
+    guid: ccc2da2c2a494dd439ba1ba5f11e71d2
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Third_Floor/Scene_Third_Floor.unity
+    guid: 9cac133dfd169774c945380134683b34
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Fourth_Floor/Scene_Fourth_Floor.unity
+    guid: 3926ec3d66d1dfa4bb121a9f48cfbaa9
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Fifth_Floor/Scene_Fifth_Floor.unity
+    guid: f6eb4c3f59de9114db5a5915b1267bd6
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Sixth_Floor/Scene_Sixth_Floor.unity
+    guid: 6db525c0e71eb5347ac2f81c2be07af2
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Seventh_Floor/Scene_Seventh_Floor.unity
+    guid: b2ebb5db2edf691458a4359c226983fb
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Eighth_Floor/Scene_Eighth_Floor.unity
+    guid: d22b6d7d8141e1a43bed3be637e475a5
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Ninth_Floor/Scene_Ninth_Floor.unity
+    guid: bf0ef58ebf8e280499d2fcb1718f0439
+  - enabled: 1
+    path: Assets/Scenes/Floors/Scene_Tenth_Floor/Scene_Tenth_Floor.unity
+    guid: 9ba25ec4e221f8c4789453057d133636
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 6988185eddb35aa4d8245f5bb1018c06, type: 2}

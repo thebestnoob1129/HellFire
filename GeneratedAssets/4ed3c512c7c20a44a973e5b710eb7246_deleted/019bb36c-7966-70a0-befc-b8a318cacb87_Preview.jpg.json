@@ -1,0 +1,11 @@
+{
+    "asset": "4ed3c512c7c20a44a973e5b710eb7246",
+    "fileName": "019bb36c-7966-70a0-befc-b8a318cacb87_Preview.jpg",
+    "prompt": "grass, gravel, sand, dirt",
+    "negativePrompt": "",
+    "model": "1a149e0e-3482-46a2-be9b-de997b8829fb",
+    "modelName": "Realistic Textures 3.0",
+    "customSeed": 1057616404,
+    "w3CTraceId": "947fff7c1fa60b5786efeada2d1e9f1f",
+    "refinementMode": "Generation"
+}

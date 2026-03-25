@@ -1,11 +1,9 @@
-using Unity.InferenceEngine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Tv : MonoBehaviour, IInteractable
 {
     public string sceneName = string.Empty;
-
     
     [SerializeField] private Camera tvCamera;
     [SerializeField] private Renderer screen;

@@ -5,10 +5,16 @@ The player must avoid hostile entities while solving puzzles and navigating thro
 The game will feature a dark and atmospheric setting, with a focus on tension and suspense.
 The player will have to return to the lobby/spawn to save their progress and unlock new levels.
 
+---
+
+Player will be trapped in a dark room to fight off against an endless hoarde of monsters.
+They must traverse 30 floors to the top of the tower
+
 [ Art Style ]
 	- Realistic Textures
 	- Dark and Gritty Atmosphere
 	- Futuristic Technology Elements
+
 [ Mechanics ]
 	- First-Person Perspective
 	- Stealth and Evasion
@@ -23,10 +29,16 @@ The player will have to return to the lobby/spawn to save their progress and unl
 	- Invoke Waits then calls
 	- Custom Crosshairs
 	- Use Kevin's basic Animations
+	- Add Required Functions To Animations Directly
+		- Jump Function
+		- Dodge Funciton
+		- Backstep Function
 
 [ Bugs ]
 	- Selected Inventory Slot Doesn't Show On Start
-	- Player Can't Go Up Slopes
+	- Materials and Object overlap creating jitter issues
+	- Camera doesn't translate smoothly across space
+
 [ Gameplay ]
 	Highlight Objects When Can Be Interacted With
 
@@ -56,7 +68,15 @@ The player will have to return to the lobby/spawn to save their progress and unl
 	- Enemy Jumpscare & Kill
 		- Jumpscares will be videos of each entity with 3 variations
 		- The player will be send back to spawn or lobby after jumpscare
+	- Max Walk Distance?
+	- Enemies Can Have Same States As Player
+		- Jumping, Crouching, Sprinting
+
 [ Player Mechanics ]
+	- Animations
+		- Crouch Set
+		- Hide Set
+
 	- Hiding
 		- Player can hide in different spots across the map
 		- Player can use crates, barrels, and other objects to hide in the map

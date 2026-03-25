@@ -1,18 +1,21 @@
-1/26 - 2/3
+[ 3/7 ]
 
-[ TV Object Added ]
-	- Added TV object to represent television devices in the system.
-	- TV object can create theri own camera -> screen funciton
-	- TV object is turned on and off by player range to TV
-	- Tv object transfers players to new scenes when interacted with.
-[ Scenes ]
-	- New Scene Require Script Added
-		- Can Automatically load required scenes by name
-	- Lobby
-		- Player can select levels from tv screen
-		- Player wakes up in designed room
-[ Entities ]
-	- Entity can detect walkable navigation paths
-	- Entity can now attack the player
-	- Entity can detect players in line of sight
-		- Must add sight range
+-Bugs Fixed
+	- Player Spawns Underneath world spawn ( Don't Save World Position ) -> Start Player As Static On Network Load
+
+- Added New Lobby Varient
+	- New Lobby UI
+- Added First Map
+
+- Added Character Effects Manager
+	- Take Stamina
+	- Take Damage
+
+- Added New Player Animations
+	- Universal Idle Animation
+
+- Updated Character Animation Manager
+	- On Death Animation
+
+- Overhaul Inventory Manager
+- Added Equipment Manager

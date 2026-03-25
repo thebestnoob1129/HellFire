@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Interactable
+  - Projectile
+  - Weapon
+  - Machine
+  - EnemySpawn
   layers:
   - Default
   - TransparentFX
@@ -15,9 +19,9 @@ TagManager:
   - Interactable
   - Player
   - Ground
-  - 
-  - 
-  - 
+  - PickupLayer
+  - Character
+  - Damagable Character
   - 
   - 
   - 
