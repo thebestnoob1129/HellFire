@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 59cdb658877a32c48906c7860032fcf1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - itemIcon: {instanceID: 0}
+  - weaponModel: {instanceID: 0}
+  - ohRBAction: {fileID: 11400000, guid: d09073728cd2e034f8cc840a40882b13, type: 2}
+  - ohRTAction: {fileID: 11400000, guid: e284b3a191be85844af4287e54ebae97, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

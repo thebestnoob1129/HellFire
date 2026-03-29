@@ -111,7 +111,7 @@ namespace CFS
         {
             base.OnNetworkSpawn();
 
-            animator.SetBool("IsMoving", characterNetworkManager.isMoving.Value);
+            animator.SetBool("isMoving", characterNetworkManager.isMoving.Value);
             characterNetworkManager.isMoving.OnValueChanged += characterNetworkManager.OnIsMovingChanged;
         }
 

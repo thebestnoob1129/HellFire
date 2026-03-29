@@ -22,7 +22,7 @@ TagManager:
   - PickupLayer
   - Character
   - Damagable Character
-  - 
+  - Damage Collider
   - 
   - 
   - 

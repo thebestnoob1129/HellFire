@@ -210,33 +210,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RB"",
-                    ""type"": ""Button"",
-                    ""id"": ""673f0bea-25dd-4873-a8fb-e95a7c9c3ef5"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RT"",
-                    ""type"": ""Button"",
-                    ""id"": ""f6e16a33-e17d-4a3e-9df1-9b13a506e8b0"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Hold RT"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""6d9d24a6-c8bc-4f2f-a3bf-912472a264d0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold(pressPoint=0.1)"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""LockOn"",
                     ""type"": ""Button"",
                     ""id"": ""b736df56-5d06-4a94-84bd-2b3dbe52862b"",
@@ -746,39 +719,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Scroll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fd3c920f-da0a-4fa9-8b06-4bc983ccc491"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""RB"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f723b4ad-ecd4-426c-aebd-232708fb8c3f"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""RT"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3cf4a5de-6fe5-47cc-a654-e118371d2dd9"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Hold RT"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1507,9 +1447,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
-        m_Player_RB = m_Player.FindAction("RB", throwIfNotFound: true);
-        m_Player_RT = m_Player.FindAction("RT", throwIfNotFound: true);
-        m_Player_HoldRT = m_Player.FindAction("Hold RT", throwIfNotFound: true);
         m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
         m_Player_SwitchRightWeapon = m_Player.FindAction("Switch Right Weapon", throwIfNotFound: true);
         m_Player_SwitchLeftWeapon = m_Player.FindAction("Switch Left Weapon", throwIfNotFound: true);
@@ -1621,9 +1558,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dodge;
     private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_Reload;
-    private readonly InputAction m_Player_RB;
-    private readonly InputAction m_Player_RT;
-    private readonly InputAction m_Player_HoldRT;
     private readonly InputAction m_Player_LockOn;
     private readonly InputAction m_Player_SwitchRightWeapon;
     private readonly InputAction m_Player_SwitchLeftWeapon;
@@ -1690,18 +1624,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Reload".
         /// </summary>
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/RB".
-        /// </summary>
-        public InputAction @RB => m_Wrapper.m_Player_RB;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/RT".
-        /// </summary>
-        public InputAction @RT => m_Wrapper.m_Player_RT;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/HoldRT".
-        /// </summary>
-        public InputAction @HoldRT => m_Wrapper.m_Player_HoldRT;
         /// <summary>
         /// Provides access to the underlying input action "Player/LockOn".
         /// </summary>
@@ -1779,15 +1701,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
-            @RB.started += instance.OnRB;
-            @RB.performed += instance.OnRB;
-            @RB.canceled += instance.OnRB;
-            @RT.started += instance.OnRT;
-            @RT.performed += instance.OnRT;
-            @RT.canceled += instance.OnRT;
-            @HoldRT.started += instance.OnHoldRT;
-            @HoldRT.performed += instance.OnHoldRT;
-            @HoldRT.canceled += instance.OnHoldRT;
             @LockOn.started += instance.OnLockOn;
             @LockOn.performed += instance.OnLockOn;
             @LockOn.canceled += instance.OnLockOn;
@@ -1847,15 +1760,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
-            @RB.started -= instance.OnRB;
-            @RB.performed -= instance.OnRB;
-            @RB.canceled -= instance.OnRB;
-            @RT.started -= instance.OnRT;
-            @RT.performed -= instance.OnRT;
-            @RT.canceled -= instance.OnRT;
-            @HoldRT.started -= instance.OnHoldRT;
-            @HoldRT.performed -= instance.OnHoldRT;
-            @HoldRT.canceled -= instance.OnHoldRT;
             @LockOn.started -= instance.OnLockOn;
             @LockOn.performed -= instance.OnLockOn;
             @LockOn.canceled -= instance.OnLockOn;
@@ -2278,27 +2182,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnReload(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "RB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRB(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "RT" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRT(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Hold RT" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnHoldRT(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "LockOn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

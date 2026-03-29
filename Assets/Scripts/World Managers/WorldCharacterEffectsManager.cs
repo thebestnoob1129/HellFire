@@ -17,7 +17,6 @@ namespace CFS
 
         private void Awake()
         {
-            Debug.LogWarning("Add take Damage Effect to instant effect list");
             if (Instance == null)
             {
                 Instance = this;

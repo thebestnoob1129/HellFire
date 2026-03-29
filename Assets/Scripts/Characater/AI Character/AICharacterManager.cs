@@ -16,7 +16,7 @@ namespace CFS
         [HideInInspector] public AICharacterAnimationManager aiCharacterAnimationManager;
 
         [Header("Navmesh Agent")]
-        [HideInInspector] public NavMeshAgent navMeshAgent;
+        public NavMeshAgent navMeshAgent;
 
         [Header("Current State")]
         [SerializeField] private AIState currentState;
@@ -67,7 +67,6 @@ namespace CFS
 
             aiCharacter.transform.rotation = aiCharacter.navMeshAgent.transform.rotation;
         }
-
 
 
         private void ProcessStateMachine()

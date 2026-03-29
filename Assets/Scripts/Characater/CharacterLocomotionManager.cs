@@ -9,19 +9,18 @@ namespace CFS
         private CharacterManager character;
 
         [Header("Ground & Jumping")]
-        [SerializeField] private LayerMask groundLayer;
         [SerializeField] protected Vector3 yVelocity; // FORCE OF CUSTOM GRAVITY
         [SerializeField] private float groundCheckRadius = 0.1f;
         [SerializeField] protected float groundedYVelocity = -20f; // FORCE CHARACTER IS STICKING TO GROUND
         [SerializeField] protected float fallStartYVelocity = -5f; // FORCE TO BEGIN FALLING
         [SerializeField] protected float groundOffset = 0.1f;
+        private LayerMask groundLayer; // World Utility Manager
         protected bool fallingVelocitySet = false;
         protected float inAirTimer = 0;
 
 
         protected virtual void Awake()
         {
-            Debug.LogWarning("Ground Detection Based On Layer", gameObject);
             character = GetComponent<CharacterManager>();
             character.isGrounded = true;
         }

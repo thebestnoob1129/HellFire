@@ -56,8 +56,7 @@ namespace CFS
         #region Update
         protected override void Awake()
         {
-            base.Awake();
-            Debug.LogWarning("Vitality Currently Doesn't Change"); // Character creation or level up system is not implemented yet, so vitality and endurance are not changing, which means health and stamina are not changing as well. This will be implemented in the future when the character progression system is added.
+            base.Awake(); 
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();

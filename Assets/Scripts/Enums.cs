@@ -34,10 +34,13 @@ namespace CFS
     {
         LightAttack01,
         LightAttack02,
+        LightAttack03,
         HeavyAttack01,
         HeavyAttack02,
+        HeavyAttack03,
         ChargedAttack01,
         ChargedAttack02,
+        ChargedAttack03,
 
     }
 

@@ -11,9 +11,12 @@ namespace CFS
         [Header("Weapon Attack Modifiers")]
         public float lightAttack01Modifier;
         public float lightAttack02Modifier;
+        public float lightAttack03Modifier;
         public float heavyAttack01Modifier;
         public float heavyAttack02Modifier;
+        public float heavyAttack03Modifier;
         public float chargedAttack01Modifier;
+        public float chargedAttack02Modifier;
 
         protected override void Awake()
         {
@@ -86,6 +89,21 @@ namespace CFS
                     break;
                 case AttackType.ChargedAttack01:
                     ApplyAttackDamageModifier(chargedAttack01Modifier, damageEffect);
+                    break;
+                case AttackType.LightAttack02:
+                    ApplyAttackDamageModifier(lightAttack02Modifier, damageEffect);
+                    break;
+                case AttackType.HeavyAttack02:
+                    ApplyAttackDamageModifier(heavyAttack02Modifier, damageEffect);
+                    break;
+                case AttackType.ChargedAttack02:
+                    ApplyAttackDamageModifier(chargedAttack02Modifier, damageEffect);
+                    break;
+                case AttackType.LightAttack03:
+                    ApplyAttackDamageModifier(lightAttack03Modifier, damageEffect);
+                    break;
+                case AttackType.HeavyAttack03:
+                    ApplyAttackDamageModifier(heavyAttack03Modifier, damageEffect);
                     break;
                 default:
                     break;

@@ -163,7 +163,7 @@ namespace CFS
             for (int i = 0; i < colliders.Length; i++)
             {
                 var lockOnTarget = colliders[i].GetComponent<CharacterManager>();
-
+                Debug.Log("Found Target: " + lockOnTarget, colliders[i].gameObject);
 
                 // Check for field of view
                 var lockOnTargetDirection = lockOnTarget.transform.position - player.transform.position;
@@ -223,6 +223,12 @@ namespace CFS
         {
             nearestLockOnTarget = null;
             availableTargets.Clear();
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(player.transform.position, lockOnRadius);
         }
     }
 }

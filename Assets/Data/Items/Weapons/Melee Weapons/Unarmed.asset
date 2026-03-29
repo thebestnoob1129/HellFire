@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59cdb658877a32c48906c7860032fcf1, type: 3}
   m_Name: Unarmed
   m_EditorClassIdentifier: Assembly-CSharp::CFS.MeleeWeaponItem
-  itemName: 
-  itemIcon: {fileID: 0}
+  itemName: Unarmed
+  itemIcon: {fileID: 5341752473459613567, guid: 4dfb6ded8bb547649ad69d298ba08d8f, type: 3}
   itemDescription: 
   itemID: 0
   weaponModel: {fileID: 8910729390186353320, guid: 0d8f176ebc3314b47aebc0f517c32b7f, type: 3}
@@ -27,4 +27,19 @@ MonoBehaviour:
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 10
+  lightAttack01Modifier: 1
+  lightAttack02Modifier: 1.1
+  lightAttack03Modifier: 1.1
+  heavyAttack01Modifier: 1.5
+  heavyAttack02Modifier: 1.7
+  heavyAttack03Modifier: 1.7
+  chargedAttack01Modifier: 1.75
+  chargedAttack02Modifier: 2.3
+  criticalAttack01Modifier: 2
   baseStaminaCost: 5
+  lightAttackStaminaCostModifier: 0.9
+  heavyAttackStaminaCostModifier: 1.5
+  attackAction: {fileID: 11400000, guid: d09073728cd2e034f8cc840a40882b13, type: 2}
+  heavyAction: {fileID: 11400000, guid: e284b3a191be85844af4287e54ebae97, type: 2}
+  chargeAction: {fileID: 11400000, guid: e284b3a191be85844af4287e54ebae97, type: 2}
+  whooshes: []

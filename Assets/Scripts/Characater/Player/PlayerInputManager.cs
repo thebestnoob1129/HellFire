@@ -38,14 +38,6 @@ namespace CFS
         public bool switchLeftWeapon;
 
 
-        [Header("Bumper Input")]
-        public bool rbInput;
-
-        [Header(" Trigger Input")]
-        public bool rtInput;
-        public bool holdRtInput;
-
-
         private void Awake()
         {
             if (Instance == null)
@@ -98,13 +90,6 @@ namespace CFS
                 playerControls.Player.SwitchRightWeapon.performed += ctx => switchRightWeapon = true;
                 playerControls.Player.SwitchLeftWeapon.performed += ctx => switchLeftWeapon = true;
 
-                // Bumpers
-                playerControls.Player.RB.performed += ctx => rbInput = true;
-
-                // Trigger
-                playerControls.Player.RT.performed += ctx => rtInput = true;
-                playerControls.Player.HoldRT.performed += ctx => holdRtInput = true;
-                playerControls.Player.HoldRT.canceled += ctx => holdRtInput = false;
 
                 // Lock ON
                 playerControls.Player.LockOn.performed += ctx => lockOnInput = true;
@@ -166,14 +151,13 @@ namespace CFS
             HandleSprintInput();
             HandleJumpInput();
             HandleReloadInput();
-            HandleRBInput();
-            HandleRTInput();
+            HandleAttackInput();
             HandleChargeRTInput();
             HandleSwitchRightWeaponInput();
             HandleSwitchLeftWeaponInput();
 
             // Not Completely Implemented
-            //HandleLockOnInput();
+            HandleLockOnInput();
 
             // Attack
             player.isFiring = attackInput;
@@ -191,12 +175,17 @@ namespace CFS
             {
                 if (player.playerCombatManager.currentTarget == null) return;
 
-                if (player.playerCombatManager.currentTarget.isDead.Value)
-                {
-
-                }
+                if (player.playerCombatManager.currentTarget.isDead.Value) return;
 
                 // Attempt to Find New Target
+                PlayerCamera.Instance.HandleLocatingLockOnTargets();
+
+                if (PlayerCamera.Instance.nearestLockOnTarget != null)
+                {
+                    player.playerCombatManager.SetTarget(PlayerCamera.Instance.nearestLockOnTarget);
+                    player.playerNetworkManager.isLockedOn.Value = true;
+
+                }
             }
             
 
@@ -314,30 +303,27 @@ namespace CFS
 
         // WARNING ADD ALL DRAIN STAMINA EFFECT TO EACH ATTACK ANIMATION EP.31
         
-        private void HandleRBInput()
+        private void HandleAttackInput()
         {
             if (isUIOpen) return;
 
-            if (rbInput)
+            if (attackInput)
             {
-                rbInput = false;
-
+                // ATTEMPT TO PERFORM ATTACK
                 player.playerNetworkManager.SetCharacterActionHand(true);
 
-                // Run Two Handing if Two Handed
+                // Run Dual Wield Attack    
+                if (player.playerNetworkManager.isUsingLeftHand.Value)
+                {
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftWeaponItem.attackAction, player.playerInventoryManager.currentLeftWeaponItem);
+                }
+                
+                if (player.playerNetworkManager.isUsingRightHand.Value)
+                {
+                    player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightWeaponItem.attackAction, player.playerInventoryManager.currentRightWeaponItem);
+                }
 
-                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightWeaponItem.ohRBAction, player.playerInventoryManager.currentRightWeaponItem);
-            }
-        }
-        private void HandleRTInput()
-        {
-            if (isUIOpen) return;
 
-            if (rtInput)
-            {
-                rtInput = false;
-
-               
             }
         }
         private void HandleSwitchRightWeaponInput()

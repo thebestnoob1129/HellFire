@@ -19,8 +19,13 @@ namespace CFS
             meleeDamageCollider.fireDamage = weapon.fireDamage;
 
             meleeDamageCollider.lightAttack01Modifier = weapon.lightAttack01Modifier;
+            meleeDamageCollider.lightAttack02Modifier = weapon.lightAttack02Modifier;
+            meleeDamageCollider.lightAttack03Modifier = weapon.lightAttack03Modifier;
             meleeDamageCollider.heavyAttack01Modifier = weapon.heavyAttack01Modifier;
+            meleeDamageCollider.heavyAttack02Modifier = weapon.heavyAttack02Modifier;
+            meleeDamageCollider.heavyAttack03Modifier = weapon.heavyAttack03Modifier;
             meleeDamageCollider.chargedAttack01Modifier = weapon.chargedAttack01Modifier;
+            meleeDamageCollider.chargedAttack02Modifier = weapon.chargedAttack02Modifier;
         }
     }
 }

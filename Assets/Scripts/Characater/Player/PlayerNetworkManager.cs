@@ -7,6 +7,8 @@ namespace CFS
 {
     public class PlayerNetworkManager : CharacterNetworkManager
     {
+        // for all if statements: player.OwnerClientId != NetworkManager.Singleton.LocalClientId
+
         private PlayerManager player;
         public NetworkVariable<FixedString64Bytes> characterName = new NetworkVariable<FixedString64Bytes>("Character", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -14,9 +16,7 @@ namespace CFS
         public NetworkVariable<int> currentWeaponBeingUsed = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<int> currentRightWeaponID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<int> currentLeftWeaponID = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<bool> isUsingRightHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<bool> isUsingLeftHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
+        
         protected override void Awake()
         {
             base.Awake();
@@ -40,14 +40,14 @@ namespace CFS
 
         public void SetNewMaxHealthValue(int oldVitality, int newVitality)
         {
-            if (!IsOwner) return;
+            if (player.OwnerClientId != NetworkManager.Singleton.LocalClientId) return;
             maxHealth.Value = player.playerStatsManager.CalculateHealthBasedOnVitalityLevel(Mathf.RoundToInt(newVitality));
             PlayerUIManager.Instance.playerHudManager.SetMaxHealthValue(maxHealth.Value);
             currentHealth.Value = maxHealth.Value;
         }
         public void SetNewMaxStaminaValue(int oldEndurance, int newEndurance)
         {
-            if (!IsOwner) return;
+            if (player.OwnerClientId != NetworkManager.Singleton.LocalClientId) return;
             maxStamina.Value = player.playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(Mathf.RoundToInt(newEndurance));
             PlayerUIManager.Instance.playerHudManager.SetMaxStaminaValue(maxStamina.Value);
             currentStamina.Value = maxStamina.Value;

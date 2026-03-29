@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 namespace CFS
@@ -9,11 +10,10 @@ namespace CFS
 
         public virtual void AttemptToPerformAction(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
         {
-            if (playerPerformingAction.IsOwner)
-            {
-                playerPerformingAction.playerNetworkManager.currentWeaponBeingUsed.Value = weaponPerformingAction.itemID;
-            }
-            Debug.Log("Action Fired");
+            if (playerPerformingAction.OwnerClientId != NetworkManager.Singleton.LocalClientId) return;
+
+            playerPerformingAction.playerNetworkManager.currentWeaponBeingUsed.Value = weaponPerformingAction.itemID;
+
         }
     }
 }

@@ -24,6 +24,9 @@ namespace CFS
         public NetworkVariable<float> horizontalMovement = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> verticalMovement = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> moveAmount = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isUsingRightHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isUsingLeftHand = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
 
         [Header("Target")]
         public NetworkVariable<ulong> currentLockOnTargetID = new NetworkVariable<ulong>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -92,7 +95,7 @@ namespace CFS
 
         public void OnIsMovingChanged(bool oldValue, bool newValue)
         {
-            character.animator.SetBool("IsMoving", isMoving.Value);
+            character.animator.SetBool("isMoving", isMoving.Value);
         }
 
         // Character Animation

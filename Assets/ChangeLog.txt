@@ -1,21 +1,7 @@
-[ 3/7 ]
+[ 3/27]
 
--Bugs Fixed
-	- Player Spawns Underneath world spawn ( Don't Save World Position ) -> Start Player As Static On Network Load
+- Added Combo
 
-- Added New Lobby Varient
-	- New Lobby UI
-- Added First Map
+- Added Character AI
 
-- Added Character Effects Manager
-	- Take Stamina
-	- Take Damage
-
-- Added New Player Animations
-	- Universal Idle Animation
-
-- Updated Character Animation Manager
-	- On Death Animation
-
-- Overhaul Inventory Manager
-- Added Equipment Manager
+- Updated Animation Tasks

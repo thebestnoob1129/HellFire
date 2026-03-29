@@ -109,14 +109,14 @@ namespace CFS
 
 
         }
-        public virtual void PlayTargetAttackActionAnimation(AttackType attackType,
+        public virtual void PlayTargetAttackActionAnimation(
+            AttackType attackType,
             string targetAnimation,
             bool isPerformingAction,
             bool applyRootMotion = true,
             bool canRotate = false,
             bool canMove = false)
         {
-            Debug.Log("Playing Animation: " + targetAnimation, gameObject);
             // Keep Track of Last Attack Performed
             // Keep Track Of Current Attack Type
             // Update Animation Set To Current Weapon Animation
@@ -127,6 +127,7 @@ namespace CFS
 
             // Normal animation
             character.animator.applyRootMotion = applyRootMotion;
+            character.characterCombatManager.lastAttackPerformed = targetAnimation;
             character.animator.CrossFade(targetAnimation, 0.2f);
             character.isPerformingAction = isPerformingAction;
             character.canRotate = canRotate;
@@ -137,5 +138,14 @@ namespace CFS
 
         }
 
+
+        public virtual void EnableCanDoCombo()
+        {
+            
+        }
+        public virtual void DisableCanDoCombo()
+        {
+            
+        }
     }
 }

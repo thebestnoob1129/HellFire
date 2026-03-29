@@ -58,10 +58,18 @@ namespace CFS
             if (player.playerInventoryManager.currentRightWeaponItem != null)
             {
                 // Old Weapon
-                rightHandSlot.UnloadWeapon();
+                if (rightHandSlot) rightHandSlot.UnloadWeapon();
 
                 // New Weapon
                 rightHandWeaponModel = Instantiate(player.playerInventoryManager.currentRightWeaponItem.weaponModel);
+                rightHandSlot.LoadWeapon(rightHandWeaponModel);
+                rightWeaponManager = rightHandWeaponModel.GetComponent<WeaponManager>();
+                rightWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightWeaponItem);
+            }
+            else
+            {
+                // New Weapon
+                rightHandWeaponModel = Instantiate(WorldItemDatabase.Instance.unarmedWeapon.weaponModel);
                 rightHandSlot.LoadWeapon(rightHandWeaponModel);
                 rightWeaponManager = rightHandWeaponModel.GetComponent<WeaponManager>();
                 rightWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightWeaponItem);
@@ -143,18 +151,24 @@ namespace CFS
 
         public void LoadLeftWeapon()
         {
-            if (!player.playerInventoryManager.currentLeftWeaponItem) return;
-
             if (player.playerInventoryManager.currentLeftWeaponItem != null)
             {
                 // Old Weapon
-                leftHandSlot.UnloadWeapon();
+                if (leftHandSlot) leftHandSlot.UnloadWeapon();
 
                 // New Weapon
                 leftHandWeaponModel = Instantiate(player.playerInventoryManager.currentLeftWeaponItem.weaponModel);
-                leftHandSlot.LoadWeapon(player.playerInventoryManager.currentLeftWeaponItem.weaponModel);
+                leftHandSlot.LoadWeapon(leftHandWeaponModel);
                 leftWeaponManager = leftHandWeaponModel.GetComponent<WeaponManager>();
                 leftWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftWeaponItem);
+            }
+            else
+            {
+                // New Weapon
+                rightHandWeaponModel = Instantiate(WorldItemDatabase.Instance.unarmedWeapon.weaponModel);
+                rightHandSlot.LoadWeapon(rightHandWeaponModel);
+                rightWeaponManager = rightHandWeaponModel.GetComponent<WeaponManager>();
+                rightWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightWeaponItem);
             }
         }
 
@@ -238,13 +252,13 @@ namespace CFS
             if (player.playerNetworkManager.isUsingRightHand.Value)
             {
                 rightWeaponManager.meleeDamageCollider.EnableDamageCollider();
-                player.playerSoundFXManager.PlaySoundFX(WorldSoundFXManager.Instance.ChooseRandomSFX(player.playerInventoryManager.currentRightWeaponItem.whooshes));
+                //player.playerSoundFXManager.PlaySoundFX(WorldSoundFXManager.Instance.ChooseRandomSFX(player.playerInventoryManager.currentRightWeaponItem.whooshes));
             } 
             // Left Weapon
             else if (player.playerNetworkManager.isUsingLeftHand.Value)
             {
                 leftWeaponManager.meleeDamageCollider.EnableDamageCollider();
-                player.playerSoundFXManager.PlaySoundFX(WorldSoundFXManager.Instance.ChooseRandomSFX(player.playerInventoryManager.currentLeftWeaponItem.whooshes));
+                //player.playerSoundFXManager.PlaySoundFX(WorldSoundFXManager.Instance.ChooseRandomSFX(player.playerInventoryManager.currentLeftWeaponItem.whooshes));
             }
 
             // Play Whoosh SFX

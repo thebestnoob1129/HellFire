@@ -19,6 +19,7 @@ namespace CFS
             character.canMove = true;
             character.canRotate = true;
             character.characterNetworkManager.isJumping.Value = false;
+            character.characterAnimatorManager.DisableCanDoCombo();
 
         }
 

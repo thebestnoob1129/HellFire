@@ -8,6 +8,10 @@ namespace CFS
         private PlayerManager player;
         public WeaponItem currentWeaponBeingUsed;
 
+        [Header("Flags")]
+        public bool canComboWithMainWeapon = false;
+        public bool canComboWithOffHandWeapon = false;
+
         protected override void Awake()
         {
             base.Awake();
@@ -17,14 +21,13 @@ namespace CFS
 
         public void PerformWeaponBasedAction(WeaponItemAction weaponAction, WeaponItem weaponPerformingAction)
         {
-            if (player.IsOwner)
-            {
-                // Perform The Action
-                weaponAction.AttemptToPerformAction(player, weaponPerformingAction);
+            if (player.OwnerClientId != NetworkManager.Singleton.LocalClientId) return;
+            // Perform The Action
+            weaponAction.AttemptToPerformAction(player, weaponPerformingAction);
 
-                // Perform Action Over Server
-                player.playerNetworkManager.NotifyTheServerOfWeaponActionServerRpc(NetworkManager.Singleton.LocalClientId, weaponAction.actionID, weaponPerformingAction.itemID);
-            }
+            // Perform Action Over Server
+            player.playerNetworkManager.NotifyTheServerOfWeaponActionServerRpc(NetworkManager.Singleton.LocalClientId, weaponAction.actionID, weaponPerformingAction.itemID);
+
         }
 
         // Go To Animation File To add Function To Run At Certain Frame
@@ -46,7 +49,6 @@ namespace CFS
                     break;
             }
             
-            Debug.Log("Stamina Deducted: " + staminaDeducted, gameObject);
             player.playerNetworkManager.currentStamina.Value -= Mathf.RoundToInt(staminaDeducted);
 
         }

@@ -21,5 +21,23 @@ namespace CFS
                 player.transform.rotation *= player.animator.deltaRotation;
             }
         }
-	}
+
+        // Animation Event Calls
+        public override void EnableCanDoCombo()
+        {
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                player.playerCombatManager.canComboWithMainWeapon = true;
+            }
+            else
+            {
+                //canComboWithOffHandWeapon = true;
+            }
+        }
+        public override void DisableCanDoCombo()
+        {
+            player.playerCombatManager.canComboWithMainWeapon = false;
+            //canComboWithOffHandWeapon = false;
+        }
+    }
 }

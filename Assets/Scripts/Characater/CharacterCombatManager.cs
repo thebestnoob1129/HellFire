@@ -16,10 +16,13 @@ namespace CFS
         [Header("Attack Type")]
         public AttackType currentAttackType;
 
+        [Header("Last Attack Animation")]
+        public string lastAttackPerformed;
+
         protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
-            head = GetComponentInChildren<LockOnTransform>().transform;
+            if (head == null) head = GetComponentInChildren<LockOnTransform>().transform;
         }
 
         public virtual void Start()

@@ -91,11 +91,13 @@ namespace CFS
 
         public virtual void EnableDamageCollider()
         {
+            Debug.Log("Enabling Damage Collider");
             damageCollider.enabled = true;
         }
 
         public virtual void DisableDamageCollider()
         {
+            Debug.Log("Disabling Damage Collider");
             damageCollider.enabled = false;
             charactersDamaged.Clear(); // Reset Characters that have been hit
         }
