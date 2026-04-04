@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   player: {fileID: 0}
-  defaultSlot: 9
+  defaultSlot: 0
   saveGame: 0
   loadGame: 0
   worldSceneIndex: 1
@@ -60,6 +60,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   characterSlots:
   - fileName: Slot
     slot: 0
@@ -70,6 +76,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -79,6 +91,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -88,6 +106,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -97,6 +121,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -106,6 +136,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -115,6 +151,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -124,6 +166,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -133,6 +181,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -142,6 +196,12 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 
   - fileName: Slot
     slot: 0
     sceneIndex: 1
@@ -151,3 +211,9 @@ MonoBehaviour:
     endurance: 1
     currentHealth: 0
     currentStamina: 0
+    bossesAwakened:
+      keys: 
+      values: 
+    bossesDefeated:
+      keys: 
+      values: 

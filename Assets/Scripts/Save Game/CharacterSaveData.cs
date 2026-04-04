@@ -45,5 +45,17 @@ namespace CFS
             }
 
         }
+
+        [Header("Bosses")]
+        public SerializableDictionary<int, bool> bossesAwakened; 
+        public SerializableDictionary<int, bool> bossesDefeated;
+
+        public CharacterSaveData()
+        {
+            bossesAwakened = new SerializableDictionary<int, bool>();
+            //bossesAwakened.TryAdd(0, false);
+            bossesDefeated = new SerializableDictionary<int, bool>();
+            //bossesDefeated.TryAdd(0, false);
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace CFS
         public static WorldSaveGameManager Instance { get; private set; }
 
         [HideInInspector] public PlayerManager player;
-        public int defaultSlot = 9;
+        public int defaultSlot = 0;
 
         [Header("Save/Load")]
         public bool saveGame;
@@ -22,11 +22,11 @@ namespace CFS
         private SaveGameDataWriter saveDataWriter;
 
         [Header("Current Character Data")]
-        public CharacterSlot currentCharacterSlot;
+        public CharacterSlot currentCharacterSlot = 0;
         public CharacterSaveData currentCharacterData;
 
         [Header("Character Slots")] // Create Into Dynamic Ray
-        public CharacterSaveData[] characterSlots = new CharacterSaveData[11];
+        public CharacterSaveData[] characterSlots = new CharacterSaveData[10];
         
         private void Awake()
         {
@@ -45,8 +45,8 @@ namespace CFS
         private void Start()
         {
             LoadAllCharacterProfiles();
-            currentCharacterSlot = (CharacterSlot)PlayerPrefs.GetInt("LastSaveUsed", 0);
-            currentCharacterData = characterSlots[(int)currentCharacterSlot];
+            currentCharacterSlot = 0;//(CharacterSlot)PlayerPrefs.GetInt("LastSaveUsed", 0);
+            currentCharacterData = characterSlots[0];
             
         }
 
@@ -138,13 +138,10 @@ namespace CFS
         public void SaveGame(CharacterSlot slot)
         {
 
-            var slotIndex = (int)slot;
-            slotIndex = Mathf.Clamp(slotIndex, 0, 9);
-
             saveDataWriter = new SaveGameDataWriter
             {
                 saveDataDirectory = Application.persistentDataPath,
-                saveFileName = characterSlots[slotIndex].fileName
+                saveFileName = characterSlots[(int)slot].fileName
             };
 
             // PASS PLAYER INFO FROM GAME TO FILE
