@@ -1,7 +1,23 @@
-[ 3/27]
+[ 3/27 - 4/5]
 
-- Added Combo
+[ Added ]
 
-- Added Character AI
+- Added Player Data ( journals and evidence )
 
-- Updated Animation Tasks
+[ Updated ]
+
+[ Fixed ]
+
+[ Removed ]
+- Removed multiple player mechanics ( lock on, charge attack, dodge, combo )
+	- Disabled Lock On & Charge Attack for now
+[ 4/6 - 4/12]
+
+[ Added ]
+- Added World Object Manager
+
+[ Fixed ]
+
+[ Updated ]
+
+[ Removed ]

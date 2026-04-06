@@ -22,11 +22,8 @@ namespace CFS
         private SaveGameDataWriter saveDataWriter;
 
         [Header("Current Character Data")]
-        public CharacterSlot currentCharacterSlot = 0;
         public CharacterSaveData currentCharacterData;
 
-        [Header("Character Slots")] // Create Into Dynamic Ray
-        public CharacterSaveData[] characterSlots = new CharacterSaveData[10];
         
         private void Awake()
         {
@@ -45,8 +42,6 @@ namespace CFS
         private void Start()
         {
             LoadAllCharacterProfiles();
-            currentCharacterSlot = 0;//(CharacterSlot)PlayerPrefs.GetInt("LastSaveUsed", 0);
-            currentCharacterData = characterSlots[0];
             
         }
 
@@ -55,18 +50,31 @@ namespace CFS
             if (saveGame)
             {
                 saveGame = false;
-                SaveGame(currentCharacterSlot);
+                SaveGame();
             }
 
             if (loadGame)
             {
                 loadGame = false;
-                LoadGame(currentCharacterSlot);
+                LoadGame();
             }
         }
 
         private void LoadAllCharacterProfiles()
         {
+            saveDataWriter = new SaveGameDataWriter
+            {
+                saveDataDirectory = Application.persistentDataPath,
+                saveFileName = "player.Data"
+            };
+
+            if (saveDataWriter.CheckIfFileExists("player.Data"))
+            {
+                currentCharacterData = saveDataWriter.LoadSaveFile();
+                return;
+            }
+
+            /*
             // Change back to directory when i add dynamic character creation
             for (var i = 0; i < 10; i++)
             {
@@ -92,56 +100,65 @@ namespace CFS
                     characterSlots[i] = saveDataWriter.LoadSaveFile();
                 }
             }
+            */
         }
 
-        public void AttemptCreateNewGame()
+        // Start Game = Have game data and load into world
+
+        // New Game = Create new game data and load into world
+
+        public void StartGame()
         {
-            currentCharacterData = new CharacterSaveData();
-            saveDataWriter.saveDataDirectory = Application.persistentDataPath;
-
-            // CHECK TO SEE IF SAVE FILE CONTAINS SLOT, MAKE DYNAMIC
-            saveDataWriter.saveFileName = PlayerPrefs.GetString("LastSlotUsed") ?? "slot_0";
-            if (!saveDataWriter.CheckIfFileExists(saveDataWriter.saveFileName))
+            if (currentCharacterData == null)
             {
-                // IF PROFILE IS NOT TAKEN, CREATE NEW FILE
-                // Character Will be created and save in game 
-
-                // Get Next Available Slot
-                currentCharacterSlot = CharacterSlot.NO_SLOT;
-                currentCharacterData = new CharacterSaveData();
+                TitleScreenManager.Instance.DisplayPopUp("No Save Data", "Please create a new game to start playing.");
                 NewGame();
                 return;
             }
-
-            TitleScreenManager.Instance.DisplayPopUp("No Free Slots", "You have the max capacity of slots available: 10.");
+            else
+            {
+                StartCoroutine(LoadWorldScene());
+            }
         }
 
-        private void NewGame()
+        public void NewGame()
         {
+
             // CREATE NEW CHARACTER DATA
-            SaveGame(currentCharacterSlot);
+            currentCharacterData = new CharacterSaveData
+            {
+                fileName = saveDataWriter.saveFileName,
+            };
+            
+            saveDataWriter = new SaveGameDataWriter
+            {
+                saveDataDirectory = Application.persistentDataPath,
+                saveFileName = currentCharacterData.fileName
+            };
+            saveDataWriter.CreateNewFile(currentCharacterData);
+
             StartCoroutine(LoadWorldScene());
         }
 
-        public void LoadGame(CharacterSlot slot)
+        public void LoadGame()
         {
             saveDataWriter = new SaveGameDataWriter
             {
                 saveDataDirectory = Application.persistentDataPath,
-                saveFileName = characterSlots[(int)slot].fileName,
+                saveFileName = currentCharacterData.fileName,
             };
             currentCharacterData = saveDataWriter.LoadSaveFile();
 
             StartCoroutine(LoadWorldScene());
         }
 
-        public void SaveGame(CharacterSlot slot)
+        public void SaveGame()
         {
 
             saveDataWriter = new SaveGameDataWriter
             {
                 saveDataDirectory = Application.persistentDataPath,
-                saveFileName = characterSlots[(int)slot].fileName
+                saveFileName = currentCharacterData.fileName
             };
 
             // PASS PLAYER INFO FROM GAME TO FILE
@@ -151,14 +168,14 @@ namespace CFS
             saveDataWriter.CreateNewFile(currentCharacterData);
         }
 
-        public void DeleteGame(CharacterSlot slot)
+        public void DeleteGame()
         {
             // CHOOSE FILE BASED ON GAME
             
             saveDataWriter = new SaveGameDataWriter
             {
                 saveDataDirectory = Application.persistentDataPath,
-                saveFileName = characterSlots[(int)slot].fileName
+                saveFileName = currentCharacterData.fileName
             };
 
             saveDataWriter.DeleteSaveFile();

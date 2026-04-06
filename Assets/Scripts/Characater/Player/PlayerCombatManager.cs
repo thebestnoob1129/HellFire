@@ -42,8 +42,7 @@ namespace CFS
             switch (currentAttackType)
             {
                 case AttackType.LightAttack01:
-                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost *
-                                      currentWeaponBeingUsed.lightAttackStaminaCostModifier;
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.lightAttackStaminaCostModifier;
                     break;
                 default:
                     break;

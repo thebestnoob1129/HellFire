@@ -10,13 +10,7 @@ namespace CFS
 
         [Header("Weapon Attack Modifiers")]
         public float lightAttack01Modifier;
-        public float lightAttack02Modifier;
-        public float lightAttack03Modifier;
         public float heavyAttack01Modifier;
-        public float heavyAttack02Modifier;
-        public float heavyAttack03Modifier;
-        public float chargedAttack01Modifier;
-        public float chargedAttack02Modifier;
 
         protected override void Awake()
         {
@@ -65,16 +59,6 @@ namespace CFS
 
             var damageEffect = Instantiate(WorldCharacterEffectsManager.Instance.takeDamageEffect);
             damageEffect.physicalDamage = physicalDamage;
-            damageEffect.standardDamage = standardDamage;
-            damageEffect.strikeDamage = strikeDamage;
-            damageEffect.slashDamage = slashDamage;
-            damageEffect.pierceDamage = pierceDamage;
-            damageEffect.magicDamage = magicDamage;
-            damageEffect.fireDamage = fireDamage;
-            damageEffect.iceDamage = iceDamage;
-            damageEffect.lightningDamage = lightningDamage;
-            damageEffect.holyDamage = holyDamage;
-            damageEffect.poiseDamage = poiseDamage;
             damageEffect.contactPoint = contactPoint;
             damageEffect.angleHitFrom = Vector3.SignedAngle(characterCausingDamage.transform.forward, target.transform.forward, Vector3.up);
 
@@ -87,24 +71,6 @@ namespace CFS
                 case AttackType.HeavyAttack01:
                     ApplyAttackDamageModifier(heavyAttack01Modifier, damageEffect);
                     break;
-                case AttackType.ChargedAttack01:
-                    ApplyAttackDamageModifier(chargedAttack01Modifier, damageEffect);
-                    break;
-                case AttackType.LightAttack02:
-                    ApplyAttackDamageModifier(lightAttack02Modifier, damageEffect);
-                    break;
-                case AttackType.HeavyAttack02:
-                    ApplyAttackDamageModifier(heavyAttack02Modifier, damageEffect);
-                    break;
-                case AttackType.ChargedAttack02:
-                    ApplyAttackDamageModifier(chargedAttack02Modifier, damageEffect);
-                    break;
-                case AttackType.LightAttack03:
-                    ApplyAttackDamageModifier(lightAttack03Modifier, damageEffect);
-                    break;
-                case AttackType.HeavyAttack03:
-                    ApplyAttackDamageModifier(heavyAttack03Modifier, damageEffect);
-                    break;
                 default:
                     break;
             }
@@ -116,10 +82,6 @@ namespace CFS
                     target.NetworkObjectId,
                     characterCausingDamage.NetworkObjectId,
                     damageEffect.physicalDamage,
-                    damageEffect.magicDamage,
-                    damageEffect.fireDamage,
-                    damageEffect.holyDamage,
-                    damageEffect.poiseDamage,
                     damageEffect.angleHitFrom,
                     damageEffect.contactPoint.x,
                     damageEffect.contactPoint.y,
@@ -131,15 +93,6 @@ namespace CFS
         private void ApplyAttackDamageModifier(float modifier, TakeDamageEffect damageEffect)
         {
             damageEffect.physicalDamage *= modifier;
-            damageEffect.standardDamage *= modifier;
-            damageEffect.strikeDamage *= modifier;
-            damageEffect.slashDamage *= modifier;
-            damageEffect.pierceDamage *= modifier;
-            damageEffect.magicDamage *= modifier;
-            damageEffect.fireDamage *= modifier;
-            damageEffect.iceDamage *= modifier;
-            damageEffect.lightningDamage *= modifier;
-            damageEffect.holyDamage *= modifier;
 
             // if attack is fully charged heavy, multiply by full charge modifier
 

@@ -19,8 +19,6 @@ namespace CFS
             base.Start();
             // Stats will be set depending on level of player or character creation menu
             // until then, stats are never calculated
-            CalculateHealthBasedOnVitalityLevel(player.playerNetworkManager.vitality.Value);
-            CalculateStaminaBasedOnEnduranceLevel(player.playerNetworkManager.endurance.Value);
         }
 
         private void Die()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CFS
 {
@@ -8,9 +7,7 @@ namespace CFS
     [System.Serializable]
     public class CharacterSaveData
     {
-
-        public string fileName = "no_slot";
-        public CharacterSlot slot = CharacterSlot.NO_SLOT;
+        public string fileName = "player.Data";
 
         [Header("Scene Index")]
         public int sceneIndex = 1;
@@ -19,32 +16,16 @@ namespace CFS
         [Header("Time Played")]
         public float secondsPlayed;
 
-        [Header("Stats")]
-        public int vitality = 1;
-        public int endurance = 1;
-
         [Header("Resources")]
         public int currentHealth = 100;
         public float currentStamina = 100;
 
-        [Header("Level Completed")]
-        public LevelData[] levelData = new LevelData[30];
+        [Header("Discoverables")]
+        public SerializableDictionary<int, bool> journalsFound; 
+        public SerializableDictionary<int, bool> evidenceFound; 
 
-        public struct LevelData
-        {
-            // save data by scene name
-            public string name;
-            public float timePlayed;
-            public bool isCompleted;
-            public bool isUnlocked;
-
-            public string GetLevelBySceneName(string scene)
-            {
-                name = SceneManager.GetSceneByName(scene).name;
-                return name;
-            }
-
-        }
+        [Header("Levels")]
+        public SerializableDictionary<int, bool> levelsCompleted; 
 
         [Header("Bosses")]
         public SerializableDictionary<int, bool> bossesAwakened; 
@@ -52,6 +33,10 @@ namespace CFS
 
         public CharacterSaveData()
         {
+            journalsFound = new SerializableDictionary<int, bool>();
+            evidenceFound = new SerializableDictionary<int, bool>();
+            levelsCompleted = new SerializableDictionary<int, bool>();
+
             bossesAwakened = new SerializableDictionary<int, bool>();
             //bossesAwakened.TryAdd(0, false);
             bossesDefeated = new SerializableDictionary<int, bool>();

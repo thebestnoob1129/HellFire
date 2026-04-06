@@ -31,33 +31,10 @@ namespace CFS
 
         private void PerformLightAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
         {
-            // If we are attacking and are able to perform combo, do combo
-            if (playerPerformingAction.playerCombatManager.canComboWithMainWeapon &&
-                playerPerformingAction.isPerformingAction)
-            {
-                playerPerformingAction.playerCombatManager.canComboWithMainWeapon = false;
+            if (playerPerformingAction.isPerformingAction) return;
 
-                // perform attack based on previous attack
-                if (playerPerformingAction.characterCombatManager.lastAttackPerformed == light_Attack_01)
-                {
-                    playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack02, light_Attack_02, true);
-                }
-                else if (playerPerformingAction.characterCombatManager.lastAttackPerformed == light_Attack_02)
-                {
-                    playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack03, light_Attack_03, true);
-                }
-                else
-                {
-                    playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
-                }
-
-            }
-            // otherwise perform regular attack
-            else if (!playerPerformingAction.isPerformingAction)
-            {
-                playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
-            }
-
+            playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
+            
         }
     }
 }

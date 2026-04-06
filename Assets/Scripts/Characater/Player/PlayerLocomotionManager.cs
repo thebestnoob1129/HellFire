@@ -248,7 +248,7 @@ namespace CFS
 
             }
         }
-
+        /*
         public void AttemptToPerformDodge()
         {
             if (player.isPerformingAction) return;
@@ -277,7 +277,7 @@ namespace CFS
             player.playerNetworkManager.currentStamina.Value -= dodgeStaminaCost;
 
         }
-        
+        */
         public void AttemptToPerformJump()
         {
             // CAN'T ATTACK WHILE JUMPING

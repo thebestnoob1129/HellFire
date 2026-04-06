@@ -11,26 +11,18 @@ namespace CFS
         public string sceneName;
         public Button levelButton;
 
-        [Header("Level Info")]
-        public CharacterSaveData.LevelData levelData;
-
         public TextMeshProUGUI difficultyLabel;
         public TextMeshProUGUI lockedLabel;
 
 
         private void Start()
         {
-            // Doesn't Make Complete sense
-            if (levelData.GetLevelBySceneName(sceneName) != null)
-            {
-                lockedLabel.text = levelData.isCompleted ? ">" : "x";
-            }
+            // Redo load level data automatically
         }
 
         public void LoadScene()
         {
             StartCoroutine(nameof(LoadSceneCoroutine));
-            if (!levelData.isUnlocked) return;
         }
 
         public IEnumerator LoadSceneCoroutine()

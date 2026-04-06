@@ -38,21 +38,6 @@ namespace CFS
             
         }
 
-        public void SetNewMaxHealthValue(int oldVitality, int newVitality)
-        {
-            if (player.OwnerClientId != NetworkManager.Singleton.LocalClientId) return;
-            maxHealth.Value = player.playerStatsManager.CalculateHealthBasedOnVitalityLevel(Mathf.RoundToInt(newVitality));
-            PlayerUIManager.Instance.playerHudManager.SetMaxHealthValue(maxHealth.Value);
-            currentHealth.Value = maxHealth.Value;
-        }
-        public void SetNewMaxStaminaValue(int oldEndurance, int newEndurance)
-        {
-            if (player.OwnerClientId != NetworkManager.Singleton.LocalClientId) return;
-            maxStamina.Value = player.playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(Mathf.RoundToInt(newEndurance));
-            PlayerUIManager.Instance.playerHudManager.SetMaxStaminaValue(maxStamina.Value);
-            currentStamina.Value = maxStamina.Value;
-        }
-
         public void OnCurrentRightHandWeaponIDChange(int oldID, int newID)
         {
             var newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponByID(newID));

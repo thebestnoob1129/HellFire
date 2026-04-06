@@ -10,18 +10,34 @@ namespace CFS
         public int bossID = 0;
         [SerializeField] private bool isAwakened = false;
         [SerializeField] private bool isDefeated = false;
+        [SerializeField] List<BossSpawnInteractable> bossSpawn;
 
         // When spawned check if defeated
         // If save file doesn't contain ID add it
         // if boss has been defeated add it, disable game object
         // if boss has not been defeated allow object to continue to be active
 
+        [Header("Debug")] public bool wakeBossUp;
+
+        protected override void Update()
+        {
+            base.Update();
+            if (wakeBossUp)
+            {
+                WakeBoss();
+                wakeBossUp = false;
+            }
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
 
+
+
             if (IsServer)
             {
+                // Locate Boss Spawn
                 // Add Information to boss data if it doesn't exist
                 if (!WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
                 {
@@ -32,12 +48,50 @@ namespace CFS
                 else
                 {
                     isDefeated = WorldSaveGameManager.Instance.currentCharacterData.bossesDefeated[bossID];
+                    isAwakened = WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened[bossID];
+                }
 
-                    if (isDefeated)
+                StartCoroutine(GetBossSpawn());
+
+                // If awakened enable boss spawn
+                if (isAwakened)
+                {
+                    foreach (var wall in bossSpawn)
                     {
-                        // Sets game object to inactive if boss has been defeated
-                        aiCharacterNetworkManager.isActive.Value = false;
+                        wall.isActive.Value = true;
                     }
+                }
+
+                // if defeated disable boss spawn and boss 
+                if (isDefeated)
+                {
+                    // Sets game object to inactive if boss has been defeated
+                    aiCharacterNetworkManager.isActive.Value = false;
+                    foreach (var wall in bossSpawn)
+                    {
+                        wall.isActive.Value = false;
+                    }
+                }
+
+
+                // Either match boss spawn ID to boss data or add new boss data with ID from boss spawn
+            }
+        }
+
+        private IEnumerator GetBossSpawn()
+        {
+            while (WorldObjectManager.Instance.bossSpawn.Count == 0)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+
+            bossSpawn = new List<BossSpawnInteractable>();
+
+            foreach (var wall in WorldObjectManager.Instance.bossSpawn)
+            {
+                if (wall.bossSpawnID == bossID)
+                {
+                    bossSpawn.Add(wall);
                 }
             }
         }
@@ -59,24 +113,23 @@ namespace CFS
                 }
 
                 isDefeated = true;
+
                 Debug.Log("Boss Defeated: " + bossID);
                 if (!WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
                 {
-                    Debug.Log("Boss ID Not Found, Adding Boss ID: " + bossID);
                     WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.Add(bossID, true);
                     WorldSaveGameManager.Instance.currentCharacterData.bossesDefeated.Add(bossID, true);
                 }
                 // load the data if it already exists
                 else
                 {
-                    Debug.Log("Boss ID Found, Updating Boss ID: " + bossID);
                     WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.Remove(bossID);
                     WorldSaveGameManager.Instance.currentCharacterData.bossesDefeated.Remove(bossID);
                     WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.Add(bossID, true);
                     WorldSaveGameManager.Instance.currentCharacterData.bossesDefeated.Add(bossID, true);
                 }
 
-                WorldSaveGameManager.Instance.SaveGame(WorldSaveGameManager.Instance.currentCharacterSlot);
+                WorldSaveGameManager.Instance.SaveGame();
 
             }
             // Play Death SFX
@@ -88,6 +141,27 @@ namespace CFS
             // Award or Finish any required objectives
 
             // Disable Character
+        }
+
+        public void WakeBoss()
+        {
+            isAwakened = true;
+
+            if (!WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.ContainsKey(bossID))
+            {
+                WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.Add(bossID, true);
+            }
+            else
+            {
+                WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.Remove(bossID);
+                WorldSaveGameManager.Instance.currentCharacterData.bossesAwakened.Add(bossID, true);
+            }
+
+            for (int i = 0; i < bossSpawn.Count; i++)
+            {
+                bossSpawn[i].isActive.Value = true;
+            }
+
         }
     }
 }

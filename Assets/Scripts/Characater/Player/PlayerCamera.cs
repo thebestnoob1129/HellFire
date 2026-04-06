@@ -30,8 +30,6 @@ namespace CFS
         [SerializeField] private float upDownRotationSpeed = 10f;
         private float cameraZPosition; // CAMERA COLLISION
         private float targetZPosition; // CAMERA COLLISION
-        [SerializeField] private float lockOnTargetSnapSpeed = 0.3f;
-        [SerializeField] private float lockOnTargetFollowSpeed = 0.3f;
 
         private void Awake()
         {
@@ -66,6 +64,7 @@ namespace CFS
 
         private void HandleRotation()
         {
+            /*
             // IF LOCKED ON FORCE ROTATION TO TARGET
             if (player.playerNetworkManager.isLockedOn.Value)
             {
@@ -91,6 +90,7 @@ namespace CFS
 
             }
             else
+            */
             {
                 //if (invertCamera) upDownRotationSpeed *= 1; else upDownRotationSpeed *= -1;
 
@@ -142,8 +142,10 @@ namespace CFS
 
         }
 
-
+        /*
         [Header("Lock On")]
+        [SerializeField] private float lockOnTargetSnapSpeed = 0.3f;
+        [SerializeField] private float lockOnTargetFollowSpeed = 0.3f;
         [SerializeField] private float lockOnRadius = 20;
         [SerializeField] private float minimumViewableAngle = -50;
         [SerializeField] private float maximumViewableAngle = 50;
@@ -230,5 +232,7 @@ namespace CFS
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(player.transform.position, lockOnRadius);
         }
+
+        */
     }
 }

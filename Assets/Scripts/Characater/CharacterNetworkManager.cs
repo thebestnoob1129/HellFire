@@ -1,9 +1,5 @@
-using System;
-using System.Net.NetworkInformation;
-using JetBrains.Annotations;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.TextCore.Text;
 
 namespace CFS
 {
@@ -38,12 +34,8 @@ namespace CFS
         public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isMoving = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<bool> isLockedOn = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<bool> isChargingAttack = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
-        [Header("Stats")]
-        public NetworkVariable<int> endurance = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<int> vitality = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        //public NetworkVariable<bool> isLockedOn = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        //public NetworkVariable<bool> isChargingAttack = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Resources")]
         public NetworkVariable<float> currentStamina = new NetworkVariable<float>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -72,7 +64,7 @@ namespace CFS
             }
 
         }
-
+        /*
         public void OnLockOnTargetIDChanged(ulong oldID, ulong newID)
         {
             if (!IsOwner)
@@ -92,10 +84,9 @@ namespace CFS
         public void OnChargingAttackChanged(bool oldValue, bool newValue)
         {
             character.animator.SetBool("isChargingAttack", newValue);
-
-
         }
 
+        */
         public void OnIsMovingChanged(bool oldValue, bool newValue)
         {
             character.animator.SetBool("isMoving", isMoving.Value);
@@ -172,10 +163,6 @@ namespace CFS
             ulong damagedCharacterID,
             ulong characterCausingDamageID,
             float physicalDamage,
-            float magicDamage,
-            float fireDamage,
-            float holyDamage,
-            float poiseDamage,
             float angleHitFrom,
             float contactPointX,
             float contactPointY,
@@ -183,7 +170,7 @@ namespace CFS
         {
             if (IsServer)
             {
-                NotifyTheServerOfCharacterDamageClientRpc(damagedCharacterID, characterCausingDamageID, physicalDamage, magicDamage, fireDamage, holyDamage, poiseDamage, angleHitFrom, contactPointX, contactPointY, contactPointZ);
+                NotifyTheServerOfCharacterDamageClientRpc(damagedCharacterID, characterCausingDamageID, physicalDamage, angleHitFrom, contactPointX, contactPointY, contactPointZ);
             }
         }
         [ClientRpc]
@@ -191,25 +178,17 @@ namespace CFS
             ulong damagedCharacterID,
             ulong characterCausingDamageID,
             float physicalDamage,
-            float magicDamage,
-            float fireDamage,
-            float holyDamage,
-            float poiseDamage,
             float angleHitFrom,
             float contactPointX,
             float contactPointY,
             float contactPointZ)
         {
-            ProcessCharacterDamageFromServer(damagedCharacterID, characterCausingDamageID, physicalDamage, magicDamage, fireDamage, holyDamage, poiseDamage, angleHitFrom, contactPointX, contactPointY, contactPointZ);
+            ProcessCharacterDamageFromServer(damagedCharacterID, characterCausingDamageID, physicalDamage, angleHitFrom, contactPointX, contactPointY, contactPointZ);
         }
         public void ProcessCharacterDamageFromServer(
             ulong damagedCharacterID,
             ulong characterCausingDamageID,
             float physicalDamage,
-            float magicDamage,
-            float fireDamage,
-            float holyDamage,
-            float poiseDamage,
             float angleHitFrom,
             float contactPointX,
             float contactPointY,
@@ -222,16 +201,6 @@ namespace CFS
             // Damage Character
             var damageEffect = Instantiate(WorldCharacterEffectsManager.Instance.takeDamageEffect);
             damageEffect.physicalDamage = physicalDamage;
-            //damageEffect.standardDamage = standardDamage;
-            //damageEffect.strikeDamage = strikeDamage;
-            //damageEffect.slashDamage = slashDamage;
-            //damageEffect.pierceDamage = pierceDamage;
-            damageEffect.magicDamage = magicDamage;
-            damageEffect.fireDamage = fireDamage;
-            //damageEffect.iceDamage = iceDamage;
-            //damageEffect.lightningDamage = lightningDamage;
-            damageEffect.holyDamage = holyDamage;
-            damageEffect.poiseDamage = poiseDamage;
             damageEffect.angleHitFrom = angleHitFrom;
             damageEffect.contactPoint = new Vector3(contactPointX, contactPointY, contactPointZ);
 

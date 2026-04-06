@@ -23,27 +23,6 @@ namespace CFS
 
         }
 
-        public int CalculateStaminaBasedOnEnduranceLevel(int endurance)
-        {
-            var stamina = 0;
-
-            // CRATE STAMINA EQUATION CALCULATION
-
-            stamina = endurance * 10;
-
-            return Mathf.RoundToInt(stamina);
-        }
-        public int CalculateHealthBasedOnVitalityLevel(int vitality)
-        {
-            var health = 0;
-
-            // CRATE STAMINA EQUATION CALCULATION
-
-            health = vitality * 10;
-
-            return Mathf.RoundToInt(health);
-        }
-
         public virtual void RegenerateStamina()
         {
             if (!character.IsOwner) return;

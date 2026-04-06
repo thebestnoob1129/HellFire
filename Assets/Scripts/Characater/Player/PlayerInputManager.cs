@@ -26,7 +26,6 @@ namespace CFS
         public float moveAmount;
 
         [Header("Player Action Input")]
-        public bool dodgeInput;
         public bool sprintInput;
         public bool jumpInput;
         public bool attackInput;
@@ -79,8 +78,6 @@ namespace CFS
                 playerControls.Player.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
                 
                 playerControls.Player.Look.performed += ctx => cameraInput = ctx.ReadValue<Vector2>();
-
-                playerControls.Player.Dodge.performed += ctx => dodgeInput = true;
                 
                 playerControls.Player.Reload.performed += ctx => reloadInput = true;
 
@@ -146,76 +143,21 @@ namespace CFS
 
             HandleMovementInput();
             HandleCameraInput();
-            HandleDodgeInput();
             HandleDropInput();
             HandleSprintInput();
             HandleJumpInput();
             HandleReloadInput();
             HandleAttackInput();
-            HandleChargeRTInput();
             HandleSwitchRightWeaponInput();
             HandleSwitchLeftWeaponInput();
-
-            // Not Completely Implemented
-            HandleLockOnInput();
+            HandleCrouchInput();
 
             // Attack
             player.isFiring = attackInput;
             // Interact
             player.isInteracting = interactInput;
-            // Crouch
-            player.isCrouching = crouchInput;
-            // Drop
         }
 
-        private void HandleLockOnInput()
-        {
-            // Check For Dead Target
-            if (player.playerNetworkManager.isLockedOn.Value)
-            {
-                if (player.playerCombatManager.currentTarget == null) return;
-
-                if (player.playerCombatManager.currentTarget.isDead.Value) return;
-
-                // Attempt to Find New Target
-                PlayerCamera.Instance.HandleLocatingLockOnTargets();
-
-                if (PlayerCamera.Instance.nearestLockOnTarget != null)
-                {
-                    player.playerCombatManager.SetTarget(PlayerCamera.Instance.nearestLockOnTarget);
-                    player.playerNetworkManager.isLockedOn.Value = true;
-
-                }
-            }
-            
-
-            if (lockOnInput && player.playerNetworkManager.isLockedOn.Value)
-            {
-                Debug.Log("Disable Lock On");
-                lockOnInput = false;
-                PlayerCamera.Instance.ClearLockOnTargets();
-                player.playerNetworkManager.isLockedOn.Value = false;
-                // Disable Lock On
-                return;
-            }
-            
-            if (lockOnInput && !player.playerNetworkManager.isLockedOn.Value)
-            {
-                Debug.Log("Enable Lock On");
-                lockOnInput = false;
-                // Enable Lock On
-                PlayerCamera.Instance.HandleLocatingLockOnTargets();
-
-                if (PlayerCamera.Instance.nearestLockOnTarget != null)
-                {
-                    player.playerCombatManager.SetTarget(PlayerCamera.Instance.nearestLockOnTarget);
-                    player.playerNetworkManager.isLockedOn.Value = true;
-
-                }
-            }
-
-
-        }
         private void HandleMovementInput()
         {
             verticalInput = movementInput.y;
@@ -256,17 +198,6 @@ namespace CFS
             dropInput = false;
         }
         
-        private void HandleDodgeInput()
-        {
-            if (dodgeInput)
-            {
-                dodgeInput = false;
-
-                // FUTURE NOTE: RETURN IF MENU OR UI WINDOW IS OPEN, DO NOTHING
-                player.playerLocomotionManager.AttemptToPerformDodge();
-            }
-        }
-
         private void HandleReloadInput()
         {
             if (reloadInput)
@@ -301,8 +232,16 @@ namespace CFS
             }
         }
 
+        private void HandleCrouchInput()
+        {
+            if (player.isPerformingAction) return;
+            if (!crouchInput) return;
+
+            player.playerAnimatorManager.PlayTargetActionAnimation("Crouch", true, true);
+        }
+
         // WARNING ADD ALL DRAIN STAMINA EFFECT TO EACH ATTACK ANIMATION EP.31
-        
+
         private void HandleAttackInput()
         {
             if (isUIOpen) return;
@@ -348,16 +287,5 @@ namespace CFS
             }
         }
 
-        private void HandleChargeRTInput()
-        {
-            // Only Checking for charged input
-            if (player.isPerformingAction)
-            {
-                if (player.playerNetworkManager.isUsingRightHand.Value)
-                {
-                    player.playerNetworkManager.isChargingAttack.Value = true;
-                }
-            }
-        }
     }
 }

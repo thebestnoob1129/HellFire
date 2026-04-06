@@ -127,12 +127,6 @@ namespace CFS
             base.OnNetworkSpawn();
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallBack;
 
-            // Flags
-            playerNetworkManager.isLockedOn.OnValueChanged += playerNetworkManager.OnIsLockOnChanged;
-            playerNetworkManager.currentLockOnTargetID.OnValueChanged += playerNetworkManager.OnLockOnTargetIDChanged;
-
-            playerNetworkManager.isChargingAttack.OnValueChanged += playerNetworkManager.OnChargingAttackChanged;
-
             if (IsOwner)
             {
                 PlayerCamera.Instance.player = this;
@@ -142,11 +136,6 @@ namespace CFS
                 gameObject.isStatic = true;
 
                 name = WorldSaveGameManager.Instance.currentCharacterData.characterName;
-                
-                // Update the total amount of health or stamina when the stat linked is changed
-                
-                playerNetworkManager.vitality.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
-                playerNetworkManager.endurance.OnValueChanged += playerNetworkManager.SetNewMaxStaminaValue;
 
                 playerNetworkManager.currentHealth.OnValueChanged += PlayerUIManager.Instance.playerHudManager.SetNewHealthValue;
                 playerNetworkManager.currentStamina.OnValueChanged += PlayerUIManager.Instance.playerHudManager.SetNewStaminaValue;
@@ -175,16 +164,9 @@ namespace CFS
 
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallBack;
 
-            // Flags
-            playerNetworkManager.isLockedOn.OnValueChanged -= playerNetworkManager.OnIsLockOnChanged;
-            playerNetworkManager.currentLockOnTargetID.OnValueChanged -= playerNetworkManager.OnLockOnTargetIDChanged;
-
-            playerNetworkManager.isChargingAttack.OnValueChanged -= playerNetworkManager.OnChargingAttackChanged;
 
             if (IsOwner)
             {
-                playerNetworkManager.vitality.OnValueChanged -= playerNetworkManager.SetNewMaxHealthValue;
-                playerNetworkManager.endurance.OnValueChanged -= playerNetworkManager.SetNewMaxStaminaValue;
 
                 playerNetworkManager.currentHealth.OnValueChanged -= PlayerUIManager.Instance.playerHudManager.SetNewHealthValue;
                 playerNetworkManager.currentStamina.OnValueChanged -= PlayerUIManager.Instance.playerHudManager.SetNewStaminaValue;
@@ -221,8 +203,6 @@ namespace CFS
             currentSaveData.sceneIndex = SceneManager.GetActiveScene().buildIndex;
             currentSaveData.characterName = playerNetworkManager.characterName.Value.ToString();
 
-            currentSaveData.vitality = playerNetworkManager.vitality.Value;
-            currentSaveData.endurance = playerNetworkManager.endurance.Value;
             currentSaveData.currentHealth = playerNetworkManager.currentHealth.Value;
             currentSaveData.currentStamina = playerNetworkManager.currentStamina.Value;
         }
@@ -230,18 +210,6 @@ namespace CFS
         public void LoadGameDataToCurrentCharacterData(ref CharacterSaveData currentSaveData)
         {
             playerNetworkManager.characterName.Value = currentSaveData.characterName ?? "Character";
-
-            playerNetworkManager.vitality.Value = currentSaveData.vitality;
-            playerNetworkManager.endurance.Value = currentSaveData.endurance;
-
-            // MOVED ON SAVE DATA
-            playerNetworkManager.maxHealth.Value = playerStatsManager.CalculateHealthBasedOnVitalityLevel(currentSaveData.vitality);
-            playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(currentSaveData.endurance);
-            
-            playerNetworkManager.currentStamina.Value = currentSaveData.currentStamina;
-            playerNetworkManager.currentHealth.Value = currentSaveData.currentHealth;
-
-            PlayerUIManager.Instance.playerHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
         }
 
         private void LoadOtherPlayerCharacterWhenJoiningServer()
@@ -252,11 +220,13 @@ namespace CFS
 
             // Armor
 
+            /*
             // LockON
             if (playerNetworkManager.isLockedOn.Value)
             {
                 playerNetworkManager.OnLockOnTargetIDChanged(0, playerNetworkManager.currentLockOnTargetID.Value);
             }
+            */
         }
 
         public override void ReviveCharacter()

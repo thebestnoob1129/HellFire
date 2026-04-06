@@ -11,16 +11,6 @@ namespace CFS
 
         [Header("Damage")]
         public float physicalDamage;
-        public float standardDamage;
-        public float strikeDamage;
-        public float slashDamage;
-        public float pierceDamage;
-
-        public float magicDamage;
-        public float fireDamage;
-        public float iceDamage;
-        public float lightningDamage;
-        public float holyDamage;
         public float poiseDamage;
 
         [Header("Contact Point")]
@@ -73,15 +63,6 @@ namespace CFS
 
             var damageEffect = Instantiate(WorldCharacterEffectsManager.Instance.takeDamageEffect);
             damageEffect.physicalDamage = physicalDamage;
-            damageEffect.standardDamage = standardDamage;
-            damageEffect.strikeDamage = strikeDamage;
-            damageEffect.slashDamage = slashDamage;
-            damageEffect.pierceDamage = pierceDamage;
-            damageEffect.magicDamage = magicDamage;
-            damageEffect.fireDamage = fireDamage;
-            damageEffect.iceDamage = iceDamage;
-            damageEffect.lightningDamage = lightningDamage;
-            damageEffect.holyDamage = holyDamage;
             damageEffect.contactPoint = contactPoint;
 
             target.characterEffectsManager.ProcessInstantEffect(damageEffect);

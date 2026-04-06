@@ -11,16 +11,6 @@ namespace CFS
 
         [Header("Damage")]
         public float physicalDamage;
-        public float standardDamage;
-        public float strikeDamage;
-        public float slashDamage;
-        public float pierceDamage;
-
-        public float magicDamage;
-        public float fireDamage;
-        public float iceDamage;
-        public float lightningDamage;
-        public float holyDamage;
 
         [Header("Final Damage")]
         private int finalDamageDealt;
@@ -82,8 +72,7 @@ namespace CFS
             // Check character for Armor Absorptions and reduce damage by percentage from damage
 
             // Add all damage types together to get final damage
-            finalDamageDealt = Mathf.RoundToInt(physicalDamage + standardDamage + strikeDamage + slashDamage + pierceDamage +
-                                              magicDamage + fireDamage + iceDamage + lightningDamage + holyDamage);
+            finalDamageDealt = Mathf.RoundToInt(physicalDamage + poiseDamage);
 
             if (finalDamageDealt < 0) finalDamageDealt = 1;
 
